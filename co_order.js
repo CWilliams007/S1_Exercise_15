@@ -4,11 +4,10 @@
    New Perspectives on HTML5, CSS3, and JavaScript 6th Edition
    Tutorial 13
    Tutorial Case
-
    Order Form Script
    
-    Author: Chad Williams
-    Date:   4.11.19
+   Author: Chad Williams
+   Date: 4.11.19 
    
    Filename: co_order.js
    
@@ -31,57 +30,55 @@
 window.addEventListener("load", function () {
       var orderForm = document.forms.orderForm;
       orderForm.elements.orderDate.value = new Date().toDateString();
+
       orderForm.elements.model.focus();
 
-      // calculate the cost of the order
+      // Calculate the cost of the order 
       calcOrder();
 
-      // event handlers for web form 
+      // Event handlers for the web form 
       orderForm.elements.model.onchange = calcOrder;
       orderForm.elements.qty.onchange = calcOrder;
 
-      var planOptions = document.querySelectorAll('input[name="protection"]');
+      var planOptions = document.querySelectorAll("input[name='protections']");
+
       for (var i = 0; i < planOptions.length; i++) {
-            planOptions[i].onclick = calcOrder
+            planOptions[i].onclick = calcOrder;
       }
-})
-
-
+});
 
 function calcOrder() {
       var orderForm = document.forms.orderForm;
 
-      // calculate initial cost of the order
+      // Calculate the inital cost of the order 
       var mIndex = orderForm.elements.model.selectedIndex;
       var mCost = orderForm.elements.model.options[mIndex].value;
       var qIndex = orderForm.elements.qty.selectedIndex;
       var quantity = orderForm.elements.qty[qIndex].value;
 
-      // initial cost = model cost x quantity
+      // Initial cost = model cost  *  quantity 
       var initialCost = mCost * quantity;
-      orderForm.elements.initialCost.value = formatUSCurrency(initialCost);
+      orderForm.elements.initialCost.value = formatUSACurrency(initialCost);
 
-      // retrive the cost of the protection plan
-      var pCost = document.querySelector('input[name="protection"]:checked')
-            .value * quantity;
+      // Retrieve the cost of the user's protection plan 
+      var pCost = document.querySelector("input[name='protection']:checked").value * quantity;
       orderForm.elements.protectionCost.value = formatNumber(pCost, 2);
 
-
-      // calculate the order subtotal
+      // Calculate the order subtotal 
       orderForm.elements.subtotal.value = formatNumber(initialCost + pCost, 2);
 
-      // calculate sales tax
+      // Calculates the sales tax 
       var salesTax = 0.05 * (initialCost + pCost);
       orderForm.elements.salesTax.value = formatNumber(salesTax, 2);
 
-      // calculate the cost of the total order 
-      var totalCost = intialCost + pCost + salesTax;
-      orderForm.elements.totalCost.value = formatUSCurrency(totalCost);
+      // Calculate the cost of the total order 
+      var totalCost = initialCost + pCost + salesTax;
+      orderForm.elements.totalCost.value = formatUSACurrency(totalCost);
 
-      //store order details
+      // Store the order details 
       orderForm.elements.modelName.value = orderForm.elements.model.options[mIndex].text;
 
-      orderForm.elements.protectionName.value = document.querySelector('input[name="protection"]:checked').nextSibling.nodeValue;
+      orderForm.elements.protectionName.value = document.querySelector("input[name='protection']:checked").nextSibling.nodeValue;
 }
 
 function formatNumber(val, decimals) {
@@ -91,7 +88,7 @@ function formatNumber(val, decimals) {
       });
 }
 
-function formatUSCurrency(val) {
+function formatUSACurrency(val) {
       return val.toLocaleString('en-us', {
             style: "currency",
             currency: "USD"
